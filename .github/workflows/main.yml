@@ -1,0 +1,23 @@
+name: Run code in GitHub action
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install openbox firefox tigervnc-standalone-server
+
+      - name: Clone noVNC
+        run: git clone https://github.com/novnc/noVNC
+
+      - name: Start VNC server
+        run: sudo vncserver -SecurityType none -xstartup "openbox" -rfbport 5900
+
+      - name: Start noVNC proxy
+        run: sudo ./utils/novnc_proxy --vnc 127.0.0.1:5900 --listen localhost:6080
