@@ -17,7 +17,8 @@ jobs:
         run: git clone https://github.com/novnc/noVNC
 
       - name: Start VNC server
-        run: sudo vncserver -SecurityType none -xstartup "openbox" -rfbport 5900
+        run: sudo vncserver -SecurityType none -xstartup "openbox" -rfbport 5900 -localhost no
+        shell: /usr/bin/bash -e {0}
 
       - name: Start noVNC proxy
-        run: sudo ./utils/novnc_proxy --vnc 127.0.0.1:5900 --listen localhost:6080
+        run: sudo ./utils/novnc_proxy --vnc 127.0.0.1:5900 --listen 0.0.0.0:6080
